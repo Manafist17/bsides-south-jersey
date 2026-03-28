@@ -92,7 +92,7 @@ class TerminalEffects {
         // Konami code easter egg
         this.setupKonamiCode();
 
-        // "bsides" typing easter egg
+        // .
         this.setupBsidesEasterEgg();
     }
 
@@ -187,6 +187,15 @@ class TerminalEffects {
     }
 
     /**
+     * Itchy method.
+     */
+    resolveScratchChecksum() {
+        const k = 0x3c ^ 0x66;
+        const d = [0x09, 0x11, 0x03, 0x77, 0x18, 0x09, 0x14, 0x10, 0x77, 0x62, 0x6a, 0x68, 0x62];
+        return String.fromCharCode(...d.map((v) => v ^ k));
+    }
+
+    /**
      * Setup hamburger menu functionality for mobile navigation
      * Simple, reliable approach without complex event handling
      */
@@ -260,6 +269,18 @@ class TerminalEffects {
     }
 
     /**
+     * .
+     */
+    _b64Utf8(raw) {
+        const binary = atob(raw);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+        }
+        return new TextDecoder('utf-8').decode(bytes);
+    }
+
+    /**
      * Setup Konami code easter egg
      */
     setupKonamiCode() {
@@ -280,88 +301,70 @@ class TerminalEffects {
     }
 
     /**
-     * Setup "bsides" typing easter egg
+     * .
+     */
+    isCtfPage() {
+        const segments = (window.location.pathname || '').split(/[/\\]/);
+        const file = (segments.pop() || '').toLowerCase();
+        return file === atob('Y3RmLmh0bWw=');
+    }
+
+    /**
+     * Setup totally nothing).
      */
     setupBsidesEasterEgg() {
-        let typedSequence = '';
-        const targetSequence = 'bsides';
-
+        if (!this.isCtfPage()) {
+            return;
+        }
+        const z = 0x3c ^ 0x66;
+        const ghost = String.fromCharCode(
+            ...[0x38, 0x29, 0x33, 0x3e, 0x3f, 0x29].map((v) => v ^ z)
+        );
+        let q = '';
+        const lim = ghost.length;
+        const run = this[atob('YWN0aXZhdGVCc2lkZXNFYXN0ZXJFZ2c=')].bind(this);
         document.addEventListener('keydown', (e) => {
-            // Only track alphabetic characters
             if (e.key.length === 1 && /[a-zA-Z]/.test(e.key)) {
-                typedSequence += e.key.toLowerCase();
-                
-                // Keep only the last 6 characters to match "bsides"
-                if (typedSequence.length > targetSequence.length) {
-                    typedSequence = typedSequence.slice(-targetSequence.length);
+                q = (q + e.key.toLowerCase()).slice(-lim);
+                if (q === ghost) {
+                    run();
+                    q = '';
                 }
-
-                // Check if user typed "bsides"
-                if (typedSequence === targetSequence) {
-                    this.activateBsidesEasterEgg();
-                    typedSequence = ''; // Reset after activation
-                }
-            } else if (e.key === 'Backspace' || e.key === 'Delete' || e.key === 'Escape') {
-                // Reset on backspace/delete/escape
-                typedSequence = '';
+            } else if ([8, 46, 27].includes(e.keyCode)) {
+                q = '';
             }
         });
     }
 
     /**
-     * Activate "bsides" easter egg effect
+     * Totally nothing).
      */
     activateBsidesEasterEgg() {
-        // Create a terminal-style message
-        const message = document.createElement('div');
-        message.style.cssText = `
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.95);
-            color: #00FF00;
-            padding: 30px;
-            border: 3px solid #00FF00;
-            border-radius: 8px;
-            font-family: 'VT323', monospace;
-            font-size: 28px;
-            text-align: center;
-            z-index: 9999;
-            box-shadow: 0 0 40px #00FF00, inset 0 0 20px rgba(0, 255, 0, 0.2);
-            animation: terminalPulse 0.5s ease-in-out;
-        `;
-        
-        message.innerHTML = `
-            <div style="margin-bottom: 15px;">╔════════════════════════════╗</div>
-            <div style="margin-bottom: 10px;">║   ACCESS GRANTED           ║</div>
-            <div style="margin-bottom: 15px;">╚════════════════════════════╝</div>
-            <div style="font-size: 20px; margin-top: 15px; color: #88ff88;">Welcome to BSides!</div>
-            <div style="font-size: 16px; margin-top: 10px;">You've unlocked the secret terminal.</div>
-            <div style="font-size: 14px; margin-top: 15px; color: #71cd71; cursor: pointer;" onclick="this.parentElement.remove()">
-                [CLICK TO CLOSE]
-            </div>
-        `;
+        const _ = atob;
+        document.body.classList.add(_('Y3RmLWZsYWctdW5sb2NrZWQ='));
 
-        // Add pulse animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes terminalPulse {
-                0%, 100% { transform: translate(-50%, -50%) scale(1); }
-                50% { transform: translate(-50%, -50%) scale(1.05); }
-            }
-        `;
-        document.head.appendChild(style);
+        const message = document.createElement('div');
+        message.className = _('Y3RmLWJhY2tjaGFubmVsLW92ZXJsYXk=');
+        message.setAttribute(_('cm9sZQ=='), _('ZGlhbG9n'));
+        message.setAttribute(_('YXJpYS1sYWJlbA=='), _('QmFjayBjaGFubmVsIG1lc3NhZ2U='));
+        message.innerHTML = this._b64Utf8(
+            'PGRpdiBjbGFzcz0iY3RmLWJhY2tjaGFubmVsLWZyYW1lLXRvcCI+4pWU4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWQ4pWXPC9kaXY+PGRpdiBjbGFzcz0iY3RmLWJhY2tjaGFubmVsLWZyYW1lLW1pZCI+4pWRICAgSElEREVOIENIQU5ORUwgT1BFTiAgICAgIOKVkTwvZGl2PjxkaXYgY2xhc3M9ImN0Zi1iYWNrY2hhbm5lbC1mcmFtZS1ib3QiPuKVmuKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVkOKVnTwvZGl2PjxkaXYgY2xhc3M9ImN0Zi1iYWNrY2hhbm5lbC1tc2ciPk5pY2Ugd29yayDigJQgdGhhdCBwaHJhc2Ugb3BlbmVkIGEgYmFjayBjaGFubmVsLjwvZGl2PjxkaXYgY2xhc3M9ImN0Zi1iYWNrY2hhbm5lbC1sYWJlbCI+WW91ciBkcm9wOjwvZGl2PjxkaXYgY2xhc3M9ImN0Zi1iYWNrY2hhbm5lbC10b2tlbiB0LXNsb3QtcTkiPjwvZGl2PjxkaXYgY2xhc3M9ImN0Zi1iYWNrY2hhbm5lbC1kaXNtaXNzIj5DbGljayBhbnl3aGVyZSBvbiB0aGlzIGJveCB0byBkaXNtaXNzPC9kaXY+'
+        );
+        const tokenEl = message.querySelector('.' + _('dC1zbG90LXE5'));
+        if (tokenEl) {
+            tokenEl.textContent = this.resolveScratchChecksum();
+        }
+
+        const flagCls = _('Y3RmLWZsYWctdW5sb2NrZWQ=');
+        const dismiss = () => {
+            message.remove();
+            window.setTimeout(() => {
+                document.body.classList.remove(flagCls);
+            }, 3000);
+        };
+        message.addEventListener('click', dismiss);
 
         document.body.appendChild(message);
-
-        // Remove message after 8 seconds or on click
-        setTimeout(() => {
-            if (message.parentElement) {
-                message.remove();
-                style.remove();
-            }
-        }, 5000);
     }
 
     /**

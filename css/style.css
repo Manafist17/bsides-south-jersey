@@ -173,6 +173,103 @@ body::before {
   text-shadow: none;
 }
 
+/* CTF: red frame + back-channel dialog after typing the flag (see terminal.js) */
+@keyframes ctfBackchannelPulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+body.ctf-flag-unlocked .terminal-window {
+  border-color: var(--terminal-red);
+  box-shadow: 0 0 20px var(--terminal-red),
+    inset 0 0 20px rgba(255, 0, 0, 0.1);
+}
+
+body.ctf-flag-unlocked .terminal-header {
+  border-bottom-color: rgba(167, 0, 0, 0.55);
+}
+
+body.ctf-flag-unlocked .nav-menu {
+  border-bottom-color: var(--terminal-red);
+}
+
+.ctf-backchannel-overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.95);
+  color: #ff6b6b;
+  padding: 30px;
+  border: 3px solid var(--terminal-red);
+  border-radius: 8px;
+  font-family: "VT323", "Courier New", monospace;
+  font-size: 28px;
+  text-align: center;
+  z-index: 9999;
+  box-shadow: 0 0 40px var(--terminal-red),
+    inset 0 0 20px rgba(255, 0, 0, 0.2);
+  animation: ctfBackchannelPulse 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.ctf-backchannel-overlay .ctf-backchannel-frame-top {
+  margin-bottom: 15px;
+}
+
+.ctf-backchannel-overlay .ctf-backchannel-frame-mid {
+  margin-bottom: 10px;
+}
+
+.ctf-backchannel-overlay .ctf-backchannel-frame-bot {
+  margin-bottom: 15px;
+}
+
+.ctf-backchannel-overlay .ctf-backchannel-msg {
+  font-size: 18px;
+  margin-top: 15px;
+  color: #ff8888;
+}
+
+.ctf-backchannel-overlay .ctf-backchannel-label {
+  font-size: 16px;
+  margin-top: 12px;
+  color: rgba(255, 160, 160, 0.9);
+}
+
+.ctf-backchannel-overlay .ctf-backchannel-token {
+  font-size: 26px;
+  margin-top: 14px;
+  letter-spacing: 0.15em;
+  color: #ffcc88;
+  user-select: all;
+}
+
+.ctf-backchannel-overlay .ctf-backchannel-dismiss {
+  font-size: 14px;
+  margin-top: 18px;
+  color: #c62828;
+}
+
+.nav-link.active[href$="ctf.html"] {
+  border-color: var(--vintage-amber);
+  background-color: var(--terminal-red);
+  color: #1a1205;
+  box-shadow: 0 0 18px rgb(255, 8, 0);
+}
+
+.nav-link.active[href$="ctf.html"]:hover {
+  border-color: var(--terminal-red);
+  background-color: var(--vintage-orange-dark);
+  color: #1a1205;
+  box-shadow: 0 0 20px rgba(255, 8, 0);
+}
+
 /* Hamburger menu button */
 .hamburger-menu {
   display: none;
